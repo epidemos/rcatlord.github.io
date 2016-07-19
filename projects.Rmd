@@ -1,0 +1,44 @@
+---
+title: ""
+---
+
+<style>
+.cols {
+columns: 2 200px;
+-webkit-columns: 2 200px;
+-moz-columns: 2 200px;
+}
+</style>
+
+<br>
+<br>
+
+### Shiny apps
+I have developed a number of [Shiny](http://shiny.rstudio.com) apps using open data.
+
+<div class="cols">
+<img src="img/STATS19_scanner.gif" width="400">
+
+The [STATS19 scanner](https://pracademic.shinyapps.io/STATS19_scanner/) allows users to interrogate road casualties reported in Greater London between 2005 and 2015. A GitHub repo containing all of the R code and data can be found [here](https://github.com/rcatlord/shinyapps/tree/master/STATS19_scanner).
+</div>
+
+<br>
+
+<div class="cols">
+<img src="img/brexit.gif" width="400">
+
+The [EU referendum](https://pracademic.shinyapps.io/brexit/) app shows the spatial distribution of votes in the UK's EU referendum (23 June 2016).
+</div>
+
+<br>
+
+<div class="cols">
+<img src="img/crime_map.gif" width="400">
+
+The [Crime map](https://pracademic.shinyapps.io/crime_map/) app enables users to interrogate [open source police crime data](https://data.police.uk/) recorded by Greater Manchester Police during 2015.
+</div>
+
+<br>
+
+### Crime analysis in R
+I am building a GitHub repository with re-usable code that enables R users to tidy, summarise, and (interactively) visualise [open crime data](https://data.police.uk). The repo can be found [here](https://github.com/rcatlord/crime_analysis).

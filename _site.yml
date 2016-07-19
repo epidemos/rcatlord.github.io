@@ -1,0 +1,33 @@
+name: "Henry Partridge"
+output_dir: "."
+navbar: 
+  title: "Henry Partridge"
+  left:
+    - text: "Home"
+      icon: fa-home
+      href: index.html
+    - text: "Projects"
+      icon: fa-tasks
+      href: projects.html
+    - text: "Publications"
+      icon: fa-newspaper-o
+      href: publications.html
+    - text: "R tutorials"
+      icon: fa-file-code-o
+      menu: 
+        - text: "Introductory"
+        - text: "tasteR"
+          href: taster.html
+        - text: "GIS"
+        - text: "Using R as a GIS"
+          href: gis.html
+  right:  
+    - text: ""
+      icon: fa-github
+      href: https://github.com/rcatlord 
+output:
+  html_document:
+    theme: simplex
+    highlight: textmate
+    includes:
+      after_body: include/after_body.html

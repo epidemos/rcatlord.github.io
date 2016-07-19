@@ -1,0 +1,18 @@
+---
+title: ""
+---
+
+<br>
+<br>
+
+<div style="float: left; padding-right: 10px;">
+  <img src=img/pic.jpg style="width: 200px">
+</div>
+
+I am a Research Associate in the [Policy Evaluation and Research Unit (PERU)](http://www.mmuperu.co.uk/) at Manchester Metropolitan University working on a range of applied research projects covering criminal justice practice and policy.
+
+My research interests include crime science, R programming and data visualisation.
+
+<br>
+
+I can be contacted at [h.partridge@mmu.ac.uk](mailto:h.partridge@mmu.ac.uk)
