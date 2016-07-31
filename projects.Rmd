@@ -27,7 +27,7 @@ The [STATS19 scanner](https://pracademic.shinyapps.io/STATS19_scanner/) allows u
 <div class="cols">
 <img src="img/brexit.gif" width="400">
 
-The [EU referendum](https://pracademic.shinyapps.io/brexit/) app shows the spatial distribution of votes in the UK's EU referendum (23 June 2016).
+The [EU referendum](https://pracademic.shinyapps.io/brexit/) app uses voting data from [The Electoral Commission](http://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/upcoming-elections-and-referendums/eu-referendum/electorate-and-count-information) to explore the relationship between the votes cast during the UK's EU Referendum (23 June 2016) and immigration levels by local authority. The app was inspired by a recent article in [theconversation.com/uk](http://theconversation.com/uk) called ['Hard Evidence: how areas with low immigration voted mainly for Brexit'](http://theconversation.com/hard-evidence-how-areas-with-low-immigration-voted-mainly-for-brexit-62138)
 </div>
 
 <br>
