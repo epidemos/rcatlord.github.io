@@ -23,6 +23,9 @@ navbar:
           href: gis.html
   right:  
     - text: ""
+      icon: fa-twitter
+      href: https://twitter.com/rcatlord
+    - text: ""
       icon: fa-github
       href: https://github.com/rcatlord 
 output:
