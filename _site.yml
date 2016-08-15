@@ -1,5 +1,4 @@
 name: "Henry Partridge"
-output_dir: "."
 navbar: 
   title: "Henry Partridge"
   left:
@@ -17,14 +16,9 @@ navbar:
         - text: "GIS"
         - text: "Using R as a GIS"
           href: gis.html
-  right: 
-    - icon: fa-twitter
-      href: https://twitter.com/rcatlord
-    - icon: fa-github
+    - icon: ion-social-github
       href: https://github.com/rcatlord 
 output:
   html_document:
     theme: simplex
     highlight: textmate
-    includes:
-      after_body: include/after_body.html
