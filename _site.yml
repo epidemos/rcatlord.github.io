@@ -1,4 +1,5 @@
 name: "Henry Partridge"
+output_dir: "."
 navbar: 
   title: "Henry Partridge"
   left:
