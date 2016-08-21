@@ -14,11 +14,14 @@ navbar:
         - text: "Introductory"
         - text: "tasteR"
           href: taster.html
+        - text: "Packages"
+        - text: "ggvis"
+          href: ggvis.html
         - text: "GIS"
         - text: "Using R as a GIS"
           href: gis.html
   right:        
-    - icon: ion-social-github
+    - icon: fa-github
       href: https://github.com/rcatlord 
 output:
   html_document:

@@ -1,0 +1,3517 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>ggvis</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/detect-resize-0.5.3/jquery.resize.js"></script>
+<link href="site_libs/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet" />
+<script src="site_libs/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/d3-3.5.2/d3.min.js"></script>
+<script src="site_libs/vega-1.4.3/vega.min.js"></script>
+<script src="site_libs/lodash-2.2.1/lodash.min.js"></script>
+<script>var lodash = _.noConflict();</script>
+<link href="site_libs/ggvis-0.4.3/css/ggvis.css" rel="stylesheet" />
+<script src="site_libs/ggvis-0.4.3/js/ggvis.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 41px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+
+.section h2 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h3 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h4 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h5 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+.section h6 {
+  padding-top: 46px;
+  margin-top: -46px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3,h4,h5",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Henry Partridge</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="projects.html">Projects</a>
+</li>
+<li>
+  <a href="publications.html">Publications</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Introductory</li>
+    <li>
+      <a href="taster.html">tasteR</a>
+    </li>
+    <li class="dropdown-header">Packages</li>
+    <li>
+      <a href="ggvis.html">ggvis</a>
+    </li>
+    <li class="dropdown-header">GIS</li>
+    <li>
+      <a href="gis.html">Using R as a GIS</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/rcatlord">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">ggvis</h1>
+
+</div>
+
+
+<p><br></p>
+<div id="the-ggvis-package" class="section level3">
+<h3>The ggvis package</h3>
+<p><a href="http://ggvis.rstudio.com">ggvis</a> is a package developed by Winston Chang and Hadley Wickham that allows users to create interactive web graphics in R.</p>
+<p>Like <code>ggplot2</code>, <code>ggvis</code> is an implementation of the ‘grammar of graphics’ (Wilkinson 1999; 2005) which at its simplest states that statistical plots are assembled from several components. This is illustrated by the use of layers in <code>ggvis</code>. You start with a dataframe, map variables to visual properties (e.g. x-position, fill, size etc) and then add simple (e.g. points) or compound (e.g. smoothing lines) layers. For example, you can build up a graphic by</p>
+<pre class="r"><code>library(ggvis)
+mtcars %&gt;% # first choosing a dataset such as mtcars, then
+  ggvis(x = ~wt, y = ~mpg) %&gt;% # call `ggvis()` to build the graphic and map variables (wt) to the x and (mpg) to the y-position, then
+  layer_points() %&gt;%  # add a layer of points, then
+  layer_smooths # finally a smoothing line</code></pre>
+<p>You’ll notice that <code>ggvis</code> makes use of the <code>%&gt;%</code> or ‘pipe’ operator from the <a href="https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html"><code>magrittr</code></a> package. This allows you to write code in neat logical steps, adding layer upon layer.</p>
+<p><code>ggvis</code> is built using the reactive programming framework of <a href="http://shiny.rstudio.com">Shiny</a> so you can create static and <em>interactive</em> graphics in your web browser.</p>
+<p><br></p>
+</div>
+<div id="the-data" class="section level3">
+<h3>The data</h3>
+<p>We’ll be using some data from <a href="http://www.gapminder.org/data/">Gapminder</a> that have been helpfully bundled together into an R package called <code>gapminder</code> by <a href="https://github.com/jennybc/gapminder">Jenny Bryan</a>.</p>
+<p>There are 6 different variables in the dataframe:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">country</td>
+<td align="left"><a href="http://www.gapminder.org/documentation/documentation/formal-list-of-areas.xlsx">World countries</a></td>
+</tr>
+<tr class="even">
+<td align="left">continent</td>
+<td align="left"><a href="http://www.gapminder.org/gsdev/files/popReg/en/list_country_groups_en.xls">World continents</a></td>
+</tr>
+<tr class="odd">
+<td align="left">year</td>
+<td align="left">1952-2007</td>
+</tr>
+<tr class="even">
+<td align="left">lifeExp</td>
+<td align="left"><a href="http://www.gapminder.org/data/documentation/gd004/">Life expectancy at birth</a></td>
+</tr>
+<tr class="odd">
+<td align="left">pop</td>
+<td align="left"><a href="http://www.gapminder.org/data/documentation/gd003/">Total population</a></td>
+</tr>
+<tr class="even">
+<td align="left">gdpPercap</td>
+<td align="left"><a href="http://www.gapminder.org/data/documentation/gd001/">GDP per capita by purchasing power parities</a></td>
+</tr>
+</tbody>
+</table>
+<p>Gapminder’s data is released under the Creative Commons Attribution 3.0 Unported license. <a href="https://docs.google.com/document/pub?id=1POd-pBMc5vDXAmxrpGjPLaCSDSWuxX6FLQgq5DhlUhM">See their terms of use.</a></p>
+<p><br></p>
+</div>
+<div id="setting-up" class="section level3">
+<h3>Setting up</h3>
+<p>Before running through the questions (and answers) let’s load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.</p>
+<pre class="r"><code>library(gapminder); library(dplyr) ; library(ggvis)
+df &lt;- filter(gapminder, year == &quot;2007&quot;)
+head(df)</code></pre>
+<pre><code>## # A tibble: 6 x 6
+##       country continent  year lifeExp      pop  gdpPercap
+##        &lt;fctr&gt;    &lt;fctr&gt; &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;      &lt;dbl&gt;
+## 1 Afghanistan      Asia  2007  43.828 31889923   974.5803
+## 2     Albania    Europe  2007  76.423  3600523  5937.0295
+## 3     Algeria    Africa  2007  72.301 33333216  6223.3675
+## 4      Angola    Africa  2007  42.731 12420476  4797.2313
+## 5   Argentina  Americas  2007  75.320 40301927 12779.3796
+## 6   Australia   Oceania  2007  81.235 20434176 34435.3674</code></pre>
+<p><br></p>
+</div>
+<div id="when-are-the-and-operators-used" class="section level3">
+<h3>When are the <code>~</code> and <code>:=</code> operators used?</h3>
+<p>The <code>~</code> operator or ‘tilda’ is used to <em>map</em> visual properties like <code>x</code>, <code>y</code>, and <code>fill</code> to a variable. The plot below maps the <code>x</code> to (gdpPercap), <code>y</code> to (lifeExp), and <code>fill</code> to (continent).</p>
+<pre class="r"><code>df %&gt;%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, fill = ~continent) %&gt;% 
+  layer_points()</code></pre>
+<div id="plot_id459803056-container" class="ggvis-output-container">
+<div id="plot_id459803056" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id459803056_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id459803056" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id459803056_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id459803056" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id459803056_download" class="ggvis-download" data-plot-id="plot_id459803056">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id459803056_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"continent\"\n974.5803384,43.828,\"Asia\"\n5937.029526,76.423,\"Europe\"\n6223.367465,72.301,\"Africa\"\n4797.231267,42.731,\"Africa\"\n12779.37964,75.32,\"Americas\"\n34435.36744,81.235,\"Oceania\"\n36126.4927,79.829,\"Europe\"\n29796.04834,75.635,\"Asia\"\n1391.253792,64.062,\"Asia\"\n33692.60508,79.441,\"Europe\"\n1441.284873,56.728,\"Africa\"\n3822.137084,65.554,\"Americas\"\n7446.298803,74.852,\"Europe\"\n12569.85177,50.728,\"Africa\"\n9065.800825,72.39,\"Americas\"\n10680.79282,73.005,\"Europe\"\n1217.032994,52.295,\"Africa\"\n430.0706916,49.58,\"Africa\"\n1713.778686,59.723,\"Asia\"\n2042.09524,50.43,\"Africa\"\n36319.23501,80.653,\"Americas\"\n706.016537,44.741,\"Africa\"\n1704.063724,50.651,\"Africa\"\n13171.63885,78.553,\"Americas\"\n4959.114854,72.961,\"Asia\"\n7006.580419,72.889,\"Americas\"\n986.1478792,65.152,\"Africa\"\n277.5518587,46.462,\"Africa\"\n3632.557798,55.322,\"Africa\"\n9645.06142,78.782,\"Americas\"\n1544.750112,48.328,\"Africa\"\n14619.22272,75.748,\"Europe\"\n8948.102923,78.273,\"Americas\"\n22833.30851,76.486,\"Europe\"\n35278.41874,78.332,\"Europe\"\n2082.481567,54.791,\"Africa\"\n6025.374752,72.235,\"Americas\"\n6873.262326,74.994,\"Americas\"\n5581.180998,71.338,\"Africa\"\n5728.353514,71.878,\"Americas\"\n12154.08975,51.579,\"Africa\"\n641.3695236,58.04,\"Africa\"\n690.8055759,52.947,\"Africa\"\n33207.0844,79.313,\"Europe\"\n30470.0167,80.657,\"Europe\"\n13206.48452,56.735,\"Africa\"\n752.7497265,59.448,\"Africa\"\n32170.37442,79.406,\"Europe\"\n1327.60891,60.022,\"Africa\"\n27538.41188,79.483,\"Europe\"\n5186.050003,70.259,\"Americas\"\n942.6542111,56.007,\"Africa\"\n579.231743,46.388,\"Africa\"\n1201.637154,60.916,\"Americas\"\n3548.330846,70.198,\"Americas\"\n39724.97867,82.208,\"Asia\"\n18008.94444,73.338,\"Europe\"\n36180.78919,81.757,\"Europe\"\n2452.210407,64.698,\"Asia\"\n3540.651564,70.65,\"Asia\"\n11605.71449,70.964,\"Asia\"\n4471.061906,59.545,\"Asia\"\n40675.99635,78.885,\"Europe\"\n25523.2771,80.745,\"Asia\"\n28569.7197,80.546,\"Europe\"\n7320.880262,72.567,\"Americas\"\n31656.06806,82.603,\"Asia\"\n4519.461171,72.535,\"Asia\"\n1463.249282,54.11,\"Africa\"\n1593.06548,67.297,\"Asia\"\n23348.13973,78.623,\"Asia\"\n47306.98978,77.588,\"Asia\"\n10461.05868,71.993,\"Asia\"\n1569.331442,42.592,\"Africa\"\n414.5073415,45.678,\"Africa\"\n12057.49928,73.952,\"Africa\"\n1044.770126,59.443,\"Africa\"\n759.3499101,48.303,\"Africa\"\n12451.6558,74.241,\"Asia\"\n1042.581557,54.467,\"Africa\"\n1803.151496,64.164,\"Africa\"\n10956.99112,72.801,\"Africa\"\n11977.57496,76.195,\"Americas\"\n3095.772271,66.803,\"Asia\"\n9253.896111,74.543,\"Europe\"\n3820.17523,71.164,\"Africa\"\n823.6856205,42.082,\"Africa\"\n944,62.069,\"Asia\"\n4811.060429,52.906,\"Africa\"\n1091.359778,63.785,\"Asia\"\n36797.93332,79.762,\"Europe\"\n25185.00911,80.204,\"Oceania\"\n2749.320965,72.899,\"Americas\"\n619.6768924,56.867,\"Africa\"\n2013.977305,46.859,\"Africa\"\n49357.19017,80.196,\"Europe\"\n22316.19287,75.64,\"Asia\"\n2605.94758,65.483,\"Asia\"\n9809.185636,75.537,\"Americas\"\n4172.838464,71.752,\"Americas\"\n7408.905561,71.421,\"Americas\"\n3190.481016,71.688,\"Asia\"\n15389.92468,75.563,\"Europe\"\n20509.64777,78.098,\"Europe\"\n19328.70901,78.746,\"Americas\"\n7670.122558,76.442,\"Africa\"\n10808.47561,72.476,\"Europe\"\n863.0884639,46.242,\"Africa\"\n1598.435089,65.528,\"Africa\"\n21654.83194,72.777,\"Asia\"\n1712.472136,63.062,\"Africa\"\n9786.534714,74.002,\"Europe\"\n862.5407561,42.568,\"Africa\"\n47143.17964,79.972,\"Asia\"\n18678.31435,74.663,\"Europe\"\n25768.25759,77.926,\"Europe\"\n926.1410683,48.159,\"Africa\"\n9269.657808,49.339,\"Africa\"\n28821.0637,80.941,\"Europe\"\n3970.095407,72.396,\"Asia\"\n2602.394995,58.556,\"Africa\"\n4513.480643,39.613,\"Africa\"\n33859.74835,80.884,\"Europe\"\n37506.41907,81.701,\"Europe\"\n4184.548089,74.143,\"Asia\"\n28718.27684,78.4,\"Asia\"\n1107.482182,52.517,\"Africa\"\n7458.396327,70.616,\"Asia\"\n882.9699438,58.42,\"Africa\"\n18008.50924,69.819,\"Americas\"\n7092.923025,73.923,\"Africa\"\n8458.276384,71.777,\"Europe\"\n1056.380121,51.542,\"Africa\"\n33203.26128,79.425,\"Europe\"\n42951.65309,78.242,\"Americas\"\n10611.46299,76.384,\"Americas\"\n11415.80569,73.747,\"Americas\"\n2441.576404,74.249,\"Asia\"\n3025.349798,73.422,\"Asia\"\n2280.769906,62.698,\"Asia\"\n1271.211593,42.384,\"Africa\"\n469.7092981,43.487,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "size": {
+            "value": 50
+          },
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "layer": "back",
+      "grid": true,
+      "title": "gdpPercap"
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "layer": "back",
+      "grid": true,
+      "title": "lifeExp"
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id459803056").parseSpec(plot_id459803056_spec);
+</script>
+<p>The <code>:=</code> operator is used to <em>set</em> visual properties to a specific value like 5, or “red”. The plot below also maps the <code>x</code>, <code>y</code>, and <code>fill</code> to variables but <code>stroke</code> is set to “black” and <code>opacity</code> to 0.6.</p>
+<pre class="r"><code>df %&gt;%
+  ggvis(x = ~gdpPercap, y = ~lifeExp,  fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points()</code></pre>
+<div id="plot_id239962052-container" class="ggvis-output-container">
+<div id="plot_id239962052" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id239962052_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id239962052" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id239962052_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id239962052" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id239962052_download" class="ggvis-download" data-plot-id="plot_id239962052">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id239962052_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"continent\"\n974.5803384,43.828,\"Asia\"\n5937.029526,76.423,\"Europe\"\n6223.367465,72.301,\"Africa\"\n4797.231267,42.731,\"Africa\"\n12779.37964,75.32,\"Americas\"\n34435.36744,81.235,\"Oceania\"\n36126.4927,79.829,\"Europe\"\n29796.04834,75.635,\"Asia\"\n1391.253792,64.062,\"Asia\"\n33692.60508,79.441,\"Europe\"\n1441.284873,56.728,\"Africa\"\n3822.137084,65.554,\"Americas\"\n7446.298803,74.852,\"Europe\"\n12569.85177,50.728,\"Africa\"\n9065.800825,72.39,\"Americas\"\n10680.79282,73.005,\"Europe\"\n1217.032994,52.295,\"Africa\"\n430.0706916,49.58,\"Africa\"\n1713.778686,59.723,\"Asia\"\n2042.09524,50.43,\"Africa\"\n36319.23501,80.653,\"Americas\"\n706.016537,44.741,\"Africa\"\n1704.063724,50.651,\"Africa\"\n13171.63885,78.553,\"Americas\"\n4959.114854,72.961,\"Asia\"\n7006.580419,72.889,\"Americas\"\n986.1478792,65.152,\"Africa\"\n277.5518587,46.462,\"Africa\"\n3632.557798,55.322,\"Africa\"\n9645.06142,78.782,\"Americas\"\n1544.750112,48.328,\"Africa\"\n14619.22272,75.748,\"Europe\"\n8948.102923,78.273,\"Americas\"\n22833.30851,76.486,\"Europe\"\n35278.41874,78.332,\"Europe\"\n2082.481567,54.791,\"Africa\"\n6025.374752,72.235,\"Americas\"\n6873.262326,74.994,\"Americas\"\n5581.180998,71.338,\"Africa\"\n5728.353514,71.878,\"Americas\"\n12154.08975,51.579,\"Africa\"\n641.3695236,58.04,\"Africa\"\n690.8055759,52.947,\"Africa\"\n33207.0844,79.313,\"Europe\"\n30470.0167,80.657,\"Europe\"\n13206.48452,56.735,\"Africa\"\n752.7497265,59.448,\"Africa\"\n32170.37442,79.406,\"Europe\"\n1327.60891,60.022,\"Africa\"\n27538.41188,79.483,\"Europe\"\n5186.050003,70.259,\"Americas\"\n942.6542111,56.007,\"Africa\"\n579.231743,46.388,\"Africa\"\n1201.637154,60.916,\"Americas\"\n3548.330846,70.198,\"Americas\"\n39724.97867,82.208,\"Asia\"\n18008.94444,73.338,\"Europe\"\n36180.78919,81.757,\"Europe\"\n2452.210407,64.698,\"Asia\"\n3540.651564,70.65,\"Asia\"\n11605.71449,70.964,\"Asia\"\n4471.061906,59.545,\"Asia\"\n40675.99635,78.885,\"Europe\"\n25523.2771,80.745,\"Asia\"\n28569.7197,80.546,\"Europe\"\n7320.880262,72.567,\"Americas\"\n31656.06806,82.603,\"Asia\"\n4519.461171,72.535,\"Asia\"\n1463.249282,54.11,\"Africa\"\n1593.06548,67.297,\"Asia\"\n23348.13973,78.623,\"Asia\"\n47306.98978,77.588,\"Asia\"\n10461.05868,71.993,\"Asia\"\n1569.331442,42.592,\"Africa\"\n414.5073415,45.678,\"Africa\"\n12057.49928,73.952,\"Africa\"\n1044.770126,59.443,\"Africa\"\n759.3499101,48.303,\"Africa\"\n12451.6558,74.241,\"Asia\"\n1042.581557,54.467,\"Africa\"\n1803.151496,64.164,\"Africa\"\n10956.99112,72.801,\"Africa\"\n11977.57496,76.195,\"Americas\"\n3095.772271,66.803,\"Asia\"\n9253.896111,74.543,\"Europe\"\n3820.17523,71.164,\"Africa\"\n823.6856205,42.082,\"Africa\"\n944,62.069,\"Asia\"\n4811.060429,52.906,\"Africa\"\n1091.359778,63.785,\"Asia\"\n36797.93332,79.762,\"Europe\"\n25185.00911,80.204,\"Oceania\"\n2749.320965,72.899,\"Americas\"\n619.6768924,56.867,\"Africa\"\n2013.977305,46.859,\"Africa\"\n49357.19017,80.196,\"Europe\"\n22316.19287,75.64,\"Asia\"\n2605.94758,65.483,\"Asia\"\n9809.185636,75.537,\"Americas\"\n4172.838464,71.752,\"Americas\"\n7408.905561,71.421,\"Americas\"\n3190.481016,71.688,\"Asia\"\n15389.92468,75.563,\"Europe\"\n20509.64777,78.098,\"Europe\"\n19328.70901,78.746,\"Americas\"\n7670.122558,76.442,\"Africa\"\n10808.47561,72.476,\"Europe\"\n863.0884639,46.242,\"Africa\"\n1598.435089,65.528,\"Africa\"\n21654.83194,72.777,\"Asia\"\n1712.472136,63.062,\"Africa\"\n9786.534714,74.002,\"Europe\"\n862.5407561,42.568,\"Africa\"\n47143.17964,79.972,\"Asia\"\n18678.31435,74.663,\"Europe\"\n25768.25759,77.926,\"Europe\"\n926.1410683,48.159,\"Africa\"\n9269.657808,49.339,\"Africa\"\n28821.0637,80.941,\"Europe\"\n3970.095407,72.396,\"Asia\"\n2602.394995,58.556,\"Africa\"\n4513.480643,39.613,\"Africa\"\n33859.74835,80.884,\"Europe\"\n37506.41907,81.701,\"Europe\"\n4184.548089,74.143,\"Asia\"\n28718.27684,78.4,\"Asia\"\n1107.482182,52.517,\"Africa\"\n7458.396327,70.616,\"Asia\"\n882.9699438,58.42,\"Africa\"\n18008.50924,69.819,\"Americas\"\n7092.923025,73.923,\"Africa\"\n8458.276384,71.777,\"Europe\"\n1056.380121,51.542,\"Africa\"\n33203.26128,79.425,\"Europe\"\n42951.65309,78.242,\"Americas\"\n10611.46299,76.384,\"Americas\"\n11415.80569,73.747,\"Americas\"\n2441.576404,74.249,\"Asia\"\n3025.349798,73.422,\"Asia\"\n2280.769906,62.698,\"Asia\"\n1271.211593,42.384,\"Africa\"\n469.7092981,43.487,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "size": {
+            "value": 50
+          },
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "layer": "back",
+      "grid": true,
+      "title": "gdpPercap"
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "layer": "back",
+      "grid": true,
+      "title": "lifeExp"
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id239962052").parseSpec(plot_id239962052_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-show-multiple-scales-in-a-legend" class="section level3">
+<h3>How do you show multiple scales in a legend?</h3>
+<p>If you have multiple scales <code>gggvis</code> will unhelpfully superimpose them in the legend. In the plot below <code>size</code> is mapped to (pop) and <code>fill</code> to (continent).</p>
+<pre class="r"><code>df %&gt;%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points()</code></pre>
+<p><div id="plot_id312985366-container" class="ggvis-output-container">
+<div id="plot_id312985366" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id312985366_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id312985366" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id312985366_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id312985366" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id312985366_download" class="ggvis-download" data-plot-id="plot_id312985366">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id312985366_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    },
+    {
+      "orient": "right",
+      "size": "size",
+      "title": "pop"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "layer": "back",
+      "grid": true,
+      "title": "gdpPercap"
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "layer": "back",
+      "grid": true,
+      "title": "lifeExp"
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id312985366").parseSpec(plot_id312985366_spec);
+</script> The trick is to offset one of the scales by pushing it down the y-axis using the <code>legend_props</code> function. In this case, the <code>size</code> scale drops belows the <code>fill</code> scale.</p>
+<pre class="r"><code>df %&gt;%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
+<div id="plot_id415945790-container" class="ggvis-output-container">
+<div id="plot_id415945790" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id415945790_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id415945790" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id415945790_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id415945790" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id415945790_download" class="ggvis-download" data-plot-id="plot_id415945790">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id415945790_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "layer": "back",
+      "grid": true,
+      "title": "gdpPercap"
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "layer": "back",
+      "grid": true,
+      "title": "lifeExp"
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id415945790").parseSpec(plot_id415945790_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-change-the-titles-on-each-axis" class="section level3">
+<h3>How do you change the titles on each axis?</h3>
+<p>The <code>add_axis()</code> function includes arguments for adding titles …</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;%
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
+<div id="plot_id165005674-container" class="ggvis-output-container">
+<div id="plot_id165005674" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id165005674_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id165005674" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id165005674_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id165005674" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id165005674_download" class="ggvis-download" data-plot-id="plot_id165005674">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id165005674_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id165005674").parseSpec(plot_id165005674_spec);
+</script>
+<p>and offsetting them if they are too close to the axis labels.</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;%
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
+<div id="plot_id332279895-container" class="ggvis-output-container">
+<div id="plot_id332279895" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id332279895_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id332279895" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id332279895_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id332279895" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id332279895_download" class="ggvis-download" data-plot-id="plot_id332279895">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id332279895_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n-2176.430056865\n51811.172085565"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "name": "x",
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id332279895").parseSpec(plot_id332279895_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-log-transform-a-scale" class="section level3">
+<h3>How do you log transform a scale?</h3>
+<p>The <code>scale_numeric()</code> function includes the <code>trans()</code> argument which can transform a scale to “log”, “sqrt”, “quantile” etc. The plot below log transforms the x-axis so that doubling (gdpPercap) shows the same distance on all levels. The argument <code>expand</code> is used to prevent the points from bunching up on the y-axis.</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
+<div id="plot_id722974162-container" class="ggvis-output-container">
+<div id="plot_id722974162" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id722974162_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id722974162" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id722974162_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id722974162" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id722974162_download" class="ggvis-download" data-plot-id="plot_id722974162">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id722974162_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id722974162").parseSpec(plot_id722974162_spec);
+</script>
+<p>However, the x-axis labels aren’t easy to read. If we tweak the <code>format()</code> and <code>values()</code> arguments in the <code>add_axis()</code> function we obtain integer values that are more legibly spaced .</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
+<div id="plot_id656893865-container" class="ggvis-output-container">
+<div id="plot_id656893865" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id656893865_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id656893865" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id656893865_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id656893865" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id656893865_download" class="ggvis-download" data-plot-id="plot_id656893865">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id656893865_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "name": "fill",
+      "type": "ordinal",
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "points": true,
+      "sort": false,
+      "range": "category10"
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [500, 1000, 2000, 5000, 10000, 20000, 50000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id656893865").parseSpec(plot_id656893865_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-add-custom-fill-colours" class="section level3">
+<h3>How do you add custom fill colours?</h3>
+<p>The <code>scale_nominal()</code> function includes the <code>range</code> argument that allows users to choose their own colour palettes. The palette used in the plot below is called ‘Set2’ and derives from Cynthia Brewer’s excellent <a href="http://colorbrewer2.org">colorbrewer2.org</a></p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
+<div id="plot_id615753319-container" class="ggvis-output-container">
+<div id="plot_id615753319" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id615753319_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id615753319" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id615753319_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id615753319" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id615753319_download" class="ggvis-download" data-plot-id="plot_id615753319">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id615753319_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n1318683096"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [500, 1000, 2000, 5000, 10000, 20000, 50000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id615753319").parseSpec(plot_id615753319_spec);
+</script>
+<p><br></p>
+</div>
+<div id="can-you-incorporate-dplyr-code-into-ggvis" class="section level3">
+<h3>Can you incorporate dplyr code into ggvis?</h3>
+<p><code>ggvis</code> uses the pipe operator which is also found in <code>dplyr</code>, <code>tidyr</code> and several other packages developed by Hadley Wickham. This means that it is very easy to interweave <code>dplyr</code> and other functions into <code>ggvis</code> code. In the plot below the <code>filter()</code> function from the <a href="https://github.com/hadley/dplyr"><code>dplyr</code></a> package is used to retain values for countries in Africa and Europe. The <code>mutate()</code> function is used to convert (continent) to a factor.</p>
+<pre class="r"><code>df %&gt;% 
+  filter(continent %in% c(&quot;Africa&quot;, &quot;Europe&quot;)) %&gt;%
+  mutate(continent = factor(continent, levels = c(&quot;Africa&quot;, &quot;Europe&quot;))) %&gt;% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#e78ac3&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 50))) </code></pre>
+<div id="plot_id452374737-container" class="ggvis-output-container">
+<div id="plot_id452374737" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id452374737_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id452374737" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id452374737_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id452374737" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id452374737_download" class="ggvis-download" data-plot-id="plot_id452374737">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id452374737_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n36126.4927,79.829,8199783,\"Europe\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n2042.09524,50.43,17696293,\"Africa\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n5581.180998,71.338,80264543,\"Africa\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n40675.99635,78.885,4109086,\"Europe\"\n28569.7197,80.546,58147733,\"Europe\"\n1463.249282,54.11,35610177,\"Africa\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n4811.060429,52.906,2055080,\"Africa\"\n36797.93332,79.762,16570613,\"Europe\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n1107.482182,52.517,38139640,\"Africa\"\n882.9699438,58.42,5701579,\"Africa\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Europe\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n199579\n135031164"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.5058\n83.8642"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#e78ac3"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 50
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [500, 1000, 2000, 5000, 10000, 20000, 50000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id452374737").parseSpec(plot_id452374737_spec);
+</script>
+<p>This plot uses the <code>group_by()</code> and <code>summarise()</code> functions from <code>dplyr</code> to calculate the median for each of the continuous variables by continent. Notice that the user-defined labels on the x-axis have been amended to take account of the narrower range of median values.</p>
+<pre class="r"><code>df %&gt;% 
+    group_by(continent) %&gt;%
+    summarise(gdpPercap = median(gdpPercap),
+    lifeExp = median(lifeExp),
+    pop = median(pop)) %&gt;% 
+  mutate(continent = factor(continent)) %&gt;% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(2000, 5000, 10000, 20000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
+<div id="plot_id684400017-container" class="ggvis-output-container">
+<div id="plot_id684400017" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id684400017_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id684400017" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id684400017_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id684400017" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id684400017_download" class="ggvis-download" data-plot-id="plot_id684400017">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id684400017_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n1452.2670775,52.9265,10093310.5,\"Africa\"\n8948.102923,72.899,9319622,\"Americas\"\n4471.061906,72.396,24821286,\"Asia\"\n28054.06579,78.6085,9493598,\"Europe\"\n29810.188275,80.7195,12274973.5,\"Oceania\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n9319622\n24821286"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n1452.2670775\n29810.188275"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n51.53685\n82.10915"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": [20, 100]
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [2000, 5000, 10000, 20000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id684400017").parseSpec(plot_id684400017_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-add-text-labels" class="section level3">
+<h3>How do you add text labels?</h3>
+<p>Not all marks support all properties. The plot below shows the median values for each continent and adds a corresponding text label. Positioning the text label can be quite tricky so you will need to experiment. Since <code>layer_text()</code> doesn’t support the <code>size</code> property it has been removed.</p>
+<pre class="r"><code>df %&gt;% 
+    group_by(continent) %&gt;%
+    summarise(gdpPercap = median(gdpPercap),
+    lifeExp = median(lifeExp),
+    pop = median(pop)) %&gt;% 
+  mutate(continent = factor(continent)) %&gt;% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  layer_text(text := ~continent, x= ~gdpPercap+0.05, y=~lifeExp+0.5, fill := &quot;black&quot;, baseline := &quot;bottom&quot;, align := &quot;center&quot;, fontSize := 12) %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(2000, 5000, 10000, 20000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  hide_legend(&quot;fill&quot;)</code></pre>
+<div id="plot_id522680605-container" class="ggvis-output-container">
+<div id="plot_id522680605" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id522680605_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id522680605" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id522680605_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id522680605" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id522680605_download" class="ggvis-download" data-plot-id="plot_id522680605">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id522680605_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "gdpPercap + 0.05": "number",
+          "lifeExp + 0.5": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"continent\",\"gdpPercap + 0.05\",\"lifeExp + 0.5\"\n1452.2670775,52.9265,\"Africa\",1452.3170775,53.4265\n8948.102923,72.899,\"Americas\",8948.152923,73.399\n4471.061906,72.396,\"Asia\",4471.111906,72.896\n28054.06579,78.6085,\"Europe\",28054.11579,79.1085\n29810.188275,80.7195,\"Oceania\",29810.238275,81.2195"
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n1452.2670775\n29810.238275"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n51.51185\n82.63415"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "size": {
+            "value": 50
+          },
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    },
+    {
+      "type": "text",
+      "properties": {
+        "update": {
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          },
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap + 0\\.05"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp + 0\\.5"
+          },
+          "text": {
+            "field": "data.continent"
+          },
+          "fill": {
+            "value": "black"
+          },
+          "baseline": {
+            "value": "bottom"
+          },
+          "align": {
+            "value": "center"
+          },
+          "fontSize": {
+            "value": 12
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [2000, 5000, 10000, 20000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id522680605").parseSpec(plot_id522680605_spec);
+</script>
+</div>
+<div id="how-do-you-control-a-scale" class="section level3">
+<h3>How do you control a scale?</h3>
+<p>It is possible to control properties other than <code>x</code> and <code>y</code>. The plot below uses the <code>scale_numeric()</code> function to control the set of data values using the <code>domain</code> argument and the set of visual values using <code>range</code>. In other words, the values of (pop) are split at 3 million, 10 million etc intervals and reprented visually along a range between 2 to 200 pixels.</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
+  layer_points() %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  scale_numeric(&quot;size&quot;, domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %&gt;%
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
+<div id="plot_id981490229-container" class="ggvis-output-container">
+<div id="plot_id981490229" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id981490229_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id981490229" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id981490229_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id981490229" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id981490229_download" class="ggvis-download" data-plot-id="plot_id981490229">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id981490229_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\"\n974.5803384,43.828,31889923,\"Asia\"\n5937.029526,76.423,3600523,\"Europe\"\n6223.367465,72.301,33333216,\"Africa\"\n4797.231267,42.731,12420476,\"Africa\"\n12779.37964,75.32,40301927,\"Americas\"\n34435.36744,81.235,20434176,\"Oceania\"\n36126.4927,79.829,8199783,\"Europe\"\n29796.04834,75.635,708573,\"Asia\"\n1391.253792,64.062,150448339,\"Asia\"\n33692.60508,79.441,10392226,\"Europe\"\n1441.284873,56.728,8078314,\"Africa\"\n3822.137084,65.554,9119152,\"Americas\"\n7446.298803,74.852,4552198,\"Europe\"\n12569.85177,50.728,1639131,\"Africa\"\n9065.800825,72.39,190010647,\"Americas\"\n10680.79282,73.005,7322858,\"Europe\"\n1217.032994,52.295,14326203,\"Africa\"\n430.0706916,49.58,8390505,\"Africa\"\n1713.778686,59.723,14131858,\"Asia\"\n2042.09524,50.43,17696293,\"Africa\"\n36319.23501,80.653,33390141,\"Americas\"\n706.016537,44.741,4369038,\"Africa\"\n1704.063724,50.651,10238807,\"Africa\"\n13171.63885,78.553,16284741,\"Americas\"\n4959.114854,72.961,1318683096,\"Asia\"\n7006.580419,72.889,44227550,\"Americas\"\n986.1478792,65.152,710960,\"Africa\"\n277.5518587,46.462,64606759,\"Africa\"\n3632.557798,55.322,3800610,\"Africa\"\n9645.06142,78.782,4133884,\"Americas\"\n1544.750112,48.328,18013409,\"Africa\"\n14619.22272,75.748,4493312,\"Europe\"\n8948.102923,78.273,11416987,\"Americas\"\n22833.30851,76.486,10228744,\"Europe\"\n35278.41874,78.332,5468120,\"Europe\"\n2082.481567,54.791,496374,\"Africa\"\n6025.374752,72.235,9319622,\"Americas\"\n6873.262326,74.994,13755680,\"Americas\"\n5581.180998,71.338,80264543,\"Africa\"\n5728.353514,71.878,6939688,\"Americas\"\n12154.08975,51.579,551201,\"Africa\"\n641.3695236,58.04,4906585,\"Africa\"\n690.8055759,52.947,76511887,\"Africa\"\n33207.0844,79.313,5238460,\"Europe\"\n30470.0167,80.657,61083916,\"Europe\"\n13206.48452,56.735,1454867,\"Africa\"\n752.7497265,59.448,1688359,\"Africa\"\n32170.37442,79.406,82400996,\"Europe\"\n1327.60891,60.022,22873338,\"Africa\"\n27538.41188,79.483,10706290,\"Europe\"\n5186.050003,70.259,12572928,\"Americas\"\n942.6542111,56.007,9947814,\"Africa\"\n579.231743,46.388,1472041,\"Africa\"\n1201.637154,60.916,8502814,\"Americas\"\n3548.330846,70.198,7483763,\"Americas\"\n39724.97867,82.208,6980412,\"Asia\"\n18008.94444,73.338,9956108,\"Europe\"\n36180.78919,81.757,301931,\"Europe\"\n2452.210407,64.698,1110396331,\"Asia\"\n3540.651564,70.65,223547000,\"Asia\"\n11605.71449,70.964,69453570,\"Asia\"\n4471.061906,59.545,27499638,\"Asia\"\n40675.99635,78.885,4109086,\"Europe\"\n25523.2771,80.745,6426679,\"Asia\"\n28569.7197,80.546,58147733,\"Europe\"\n7320.880262,72.567,2780132,\"Americas\"\n31656.06806,82.603,127467972,\"Asia\"\n4519.461171,72.535,6053193,\"Asia\"\n1463.249282,54.11,35610177,\"Africa\"\n1593.06548,67.297,23301725,\"Asia\"\n23348.13973,78.623,49044790,\"Asia\"\n47306.98978,77.588,2505559,\"Asia\"\n10461.05868,71.993,3921278,\"Asia\"\n1569.331442,42.592,2012649,\"Africa\"\n414.5073415,45.678,3193942,\"Africa\"\n12057.49928,73.952,6036914,\"Africa\"\n1044.770126,59.443,19167654,\"Africa\"\n759.3499101,48.303,13327079,\"Africa\"\n12451.6558,74.241,24821286,\"Asia\"\n1042.581557,54.467,12031795,\"Africa\"\n1803.151496,64.164,3270065,\"Africa\"\n10956.99112,72.801,1250882,\"Africa\"\n11977.57496,76.195,108700891,\"Americas\"\n3095.772271,66.803,2874127,\"Asia\"\n9253.896111,74.543,684736,\"Europe\"\n3820.17523,71.164,33757175,\"Africa\"\n823.6856205,42.082,19951656,\"Africa\"\n944,62.069,47761980,\"Asia\"\n4811.060429,52.906,2055080,\"Africa\"\n1091.359778,63.785,28901790,\"Asia\"\n36797.93332,79.762,16570613,\"Europe\"\n25185.00911,80.204,4115771,\"Oceania\"\n2749.320965,72.899,5675356,\"Americas\"\n619.6768924,56.867,12894865,\"Africa\"\n2013.977305,46.859,135031164,\"Africa\"\n49357.19017,80.196,4627926,\"Europe\"\n22316.19287,75.64,3204897,\"Asia\"\n2605.94758,65.483,169270617,\"Asia\"\n9809.185636,75.537,3242173,\"Americas\"\n4172.838464,71.752,6667147,\"Americas\"\n7408.905561,71.421,28674757,\"Americas\"\n3190.481016,71.688,91077287,\"Asia\"\n15389.92468,75.563,38518241,\"Europe\"\n20509.64777,78.098,10642836,\"Europe\"\n19328.70901,78.746,3942491,\"Americas\"\n7670.122558,76.442,798094,\"Africa\"\n10808.47561,72.476,22276056,\"Europe\"\n863.0884639,46.242,8860588,\"Africa\"\n1598.435089,65.528,199579,\"Africa\"\n21654.83194,72.777,27601038,\"Asia\"\n1712.472136,63.062,12267493,\"Africa\"\n9786.534714,74.002,10150265,\"Europe\"\n862.5407561,42.568,6144562,\"Africa\"\n47143.17964,79.972,4553009,\"Asia\"\n18678.31435,74.663,5447502,\"Europe\"\n25768.25759,77.926,2009245,\"Europe\"\n926.1410683,48.159,9118773,\"Africa\"\n9269.657808,49.339,43997828,\"Africa\"\n28821.0637,80.941,40448191,\"Europe\"\n3970.095407,72.396,20378239,\"Asia\"\n2602.394995,58.556,42292929,\"Africa\"\n4513.480643,39.613,1133066,\"Africa\"\n33859.74835,80.884,9031088,\"Europe\"\n37506.41907,81.701,7554661,\"Europe\"\n4184.548089,74.143,19314747,\"Asia\"\n28718.27684,78.4,23174294,\"Asia\"\n1107.482182,52.517,38139640,\"Africa\"\n7458.396327,70.616,65068149,\"Asia\"\n882.9699438,58.42,5701579,\"Africa\"\n18008.50924,69.819,1056608,\"Americas\"\n7092.923025,73.923,10276158,\"Africa\"\n8458.276384,71.777,71158647,\"Europe\"\n1056.380121,51.542,29170398,\"Africa\"\n33203.26128,79.425,60776238,\"Europe\"\n42951.65309,78.242,301139947,\"Americas\"\n10611.46299,76.384,3447496,\"Americas\"\n11415.80569,73.747,26084662,\"Americas\"\n2441.576404,74.249,85262356,\"Asia\"\n3025.349798,73.422,4018332,\"Asia\"\n2280.769906,62.698,22211743,\"Asia\"\n1271.211593,42.384,11746035,\"Africa\"\n469.7092981,43.487,12311143,\"Africa\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n3e+06\n1e+07\n1e+08\n1e+09"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "range": [2, 2000],
+      "zero": false,
+      "nice": false,
+      "clamp": false
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      }
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "properties": {
+        "legend": {
+          "y": {
+            "value": 100
+          }
+        }
+      },
+      "size": "size",
+      "title": "pop"
+    },
+    {
+      "orient": "right",
+      "fill": "fill",
+      "title": "continent"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [500, 1000, 2000, 5000, 10000, 20000, 50000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id981490229").parseSpec(plot_id981490229_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-add-a-tooltip" class="section level3">
+<h3>How do you add a tooltip?</h3>
+<p><code>ggvis</code> enables the user to add interactive controls like <code>input_slider()</code> and <code>add_tooltip()</code> To add a tooltip you need to ensure that the <code>key</code> argument is added to the <code>ggvis()</code> call. This keeps track of which observations correspond to one another during transitions. The key used in the plot below is (country) because this is a unique id. The function <code>add_tooltip()</code> can then be added and tweaked to concatenate additional character strings to improve presentation. In this plot the user needs to click to obtain the country and continent of each mark.</p>
+<pre class="r"><code>df %&gt;% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6, key := ~country) %&gt;% 
+  layer_points() %&gt;% 
+  scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+  scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+  scale_numeric(&quot;size&quot;, domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %&gt;%
+  add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+  add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
+  add_tooltip(function(df){paste0(&quot;&lt;strong&gt;Country: &lt;/strong&gt;&quot;, df$country, 
+                                    &quot;&lt;br&gt;&lt;strong&gt;Income per person: &lt;/strong&gt; &quot;,&quot;$&quot;, round(df$gdpPercap, 0),
+                                    &quot;&lt;br&gt;&lt;strong&gt;Life expectancy: &lt;/strong&gt;&quot;, round(df$lifeExp, 1),
+                                    &quot;&lt;br&gt;&lt;strong&gt;Population: &lt;/strong&gt;&quot;, paste(format(round(df$pop / 1e6, 1), trim = TRUE), &quot;M&quot;))}, &quot;click&quot;) %&gt;% 
+  add_legend(scales = &quot;fill&quot;, title = &quot;Continent&quot;) %&gt;% hide_legend(&quot;size&quot;)</code></pre>
+<div id="plot_id382464071-container" class="ggvis-output-container">
+<div id="plot_id382464071" class="ggvis-output"></div>
+<div class="plot-gear-icon">
+<nav class="ggvis-control">
+<a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
+<ul class="ggvis-dropdown">
+<li>
+Renderer: 
+<a id="plot_id382464071_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id382464071" data-renderer="svg">SVG</a>
+ | 
+<a id="plot_id382464071_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id382464071" data-renderer="canvas">Canvas</a>
+</li>
+<li>
+<a id="plot_id382464071_download" class="ggvis-download" data-plot-id="plot_id382464071">Download</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+<script type="text/javascript">
+var plot_id382464071_spec = {
+  "data": [
+    {
+      "name": ".0",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "gdpPercap": "number",
+          "lifeExp": "number",
+          "pop": "number"
+        }
+      },
+      "values": "\"gdpPercap\",\"lifeExp\",\"pop\",\"continent\",\"country\"\n974.5803384,43.828,31889923,\"Asia\",\"Afghanistan\"\n5937.029526,76.423,3600523,\"Europe\",\"Albania\"\n6223.367465,72.301,33333216,\"Africa\",\"Algeria\"\n4797.231267,42.731,12420476,\"Africa\",\"Angola\"\n12779.37964,75.32,40301927,\"Americas\",\"Argentina\"\n34435.36744,81.235,20434176,\"Oceania\",\"Australia\"\n36126.4927,79.829,8199783,\"Europe\",\"Austria\"\n29796.04834,75.635,708573,\"Asia\",\"Bahrain\"\n1391.253792,64.062,150448339,\"Asia\",\"Bangladesh\"\n33692.60508,79.441,10392226,\"Europe\",\"Belgium\"\n1441.284873,56.728,8078314,\"Africa\",\"Benin\"\n3822.137084,65.554,9119152,\"Americas\",\"Bolivia\"\n7446.298803,74.852,4552198,\"Europe\",\"Bosnia and Herzegovina\"\n12569.85177,50.728,1639131,\"Africa\",\"Botswana\"\n9065.800825,72.39,190010647,\"Americas\",\"Brazil\"\n10680.79282,73.005,7322858,\"Europe\",\"Bulgaria\"\n1217.032994,52.295,14326203,\"Africa\",\"Burkina Faso\"\n430.0706916,49.58,8390505,\"Africa\",\"Burundi\"\n1713.778686,59.723,14131858,\"Asia\",\"Cambodia\"\n2042.09524,50.43,17696293,\"Africa\",\"Cameroon\"\n36319.23501,80.653,33390141,\"Americas\",\"Canada\"\n706.016537,44.741,4369038,\"Africa\",\"Central African Republic\"\n1704.063724,50.651,10238807,\"Africa\",\"Chad\"\n13171.63885,78.553,16284741,\"Americas\",\"Chile\"\n4959.114854,72.961,1318683096,\"Asia\",\"China\"\n7006.580419,72.889,44227550,\"Americas\",\"Colombia\"\n986.1478792,65.152,710960,\"Africa\",\"Comoros\"\n277.5518587,46.462,64606759,\"Africa\",\"Congo, Dem. Rep.\"\n3632.557798,55.322,3800610,\"Africa\",\"Congo, Rep.\"\n9645.06142,78.782,4133884,\"Americas\",\"Costa Rica\"\n1544.750112,48.328,18013409,\"Africa\",\"Cote d'Ivoire\"\n14619.22272,75.748,4493312,\"Europe\",\"Croatia\"\n8948.102923,78.273,11416987,\"Americas\",\"Cuba\"\n22833.30851,76.486,10228744,\"Europe\",\"Czech Republic\"\n35278.41874,78.332,5468120,\"Europe\",\"Denmark\"\n2082.481567,54.791,496374,\"Africa\",\"Djibouti\"\n6025.374752,72.235,9319622,\"Americas\",\"Dominican Republic\"\n6873.262326,74.994,13755680,\"Americas\",\"Ecuador\"\n5581.180998,71.338,80264543,\"Africa\",\"Egypt\"\n5728.353514,71.878,6939688,\"Americas\",\"El Salvador\"\n12154.08975,51.579,551201,\"Africa\",\"Equatorial Guinea\"\n641.3695236,58.04,4906585,\"Africa\",\"Eritrea\"\n690.8055759,52.947,76511887,\"Africa\",\"Ethiopia\"\n33207.0844,79.313,5238460,\"Europe\",\"Finland\"\n30470.0167,80.657,61083916,\"Europe\",\"France\"\n13206.48452,56.735,1454867,\"Africa\",\"Gabon\"\n752.7497265,59.448,1688359,\"Africa\",\"Gambia\"\n32170.37442,79.406,82400996,\"Europe\",\"Germany\"\n1327.60891,60.022,22873338,\"Africa\",\"Ghana\"\n27538.41188,79.483,10706290,\"Europe\",\"Greece\"\n5186.050003,70.259,12572928,\"Americas\",\"Guatemala\"\n942.6542111,56.007,9947814,\"Africa\",\"Guinea\"\n579.231743,46.388,1472041,\"Africa\",\"Guinea-Bissau\"\n1201.637154,60.916,8502814,\"Americas\",\"Haiti\"\n3548.330846,70.198,7483763,\"Americas\",\"Honduras\"\n39724.97867,82.208,6980412,\"Asia\",\"Hong Kong, China\"\n18008.94444,73.338,9956108,\"Europe\",\"Hungary\"\n36180.78919,81.757,301931,\"Europe\",\"Iceland\"\n2452.210407,64.698,1110396331,\"Asia\",\"India\"\n3540.651564,70.65,223547000,\"Asia\",\"Indonesia\"\n11605.71449,70.964,69453570,\"Asia\",\"Iran\"\n4471.061906,59.545,27499638,\"Asia\",\"Iraq\"\n40675.99635,78.885,4109086,\"Europe\",\"Ireland\"\n25523.2771,80.745,6426679,\"Asia\",\"Israel\"\n28569.7197,80.546,58147733,\"Europe\",\"Italy\"\n7320.880262,72.567,2780132,\"Americas\",\"Jamaica\"\n31656.06806,82.603,127467972,\"Asia\",\"Japan\"\n4519.461171,72.535,6053193,\"Asia\",\"Jordan\"\n1463.249282,54.11,35610177,\"Africa\",\"Kenya\"\n1593.06548,67.297,23301725,\"Asia\",\"Korea, Dem. Rep.\"\n23348.13973,78.623,49044790,\"Asia\",\"Korea, Rep.\"\n47306.98978,77.588,2505559,\"Asia\",\"Kuwait\"\n10461.05868,71.993,3921278,\"Asia\",\"Lebanon\"\n1569.331442,42.592,2012649,\"Africa\",\"Lesotho\"\n414.5073415,45.678,3193942,\"Africa\",\"Liberia\"\n12057.49928,73.952,6036914,\"Africa\",\"Libya\"\n1044.770126,59.443,19167654,\"Africa\",\"Madagascar\"\n759.3499101,48.303,13327079,\"Africa\",\"Malawi\"\n12451.6558,74.241,24821286,\"Asia\",\"Malaysia\"\n1042.581557,54.467,12031795,\"Africa\",\"Mali\"\n1803.151496,64.164,3270065,\"Africa\",\"Mauritania\"\n10956.99112,72.801,1250882,\"Africa\",\"Mauritius\"\n11977.57496,76.195,108700891,\"Americas\",\"Mexico\"\n3095.772271,66.803,2874127,\"Asia\",\"Mongolia\"\n9253.896111,74.543,684736,\"Europe\",\"Montenegro\"\n3820.17523,71.164,33757175,\"Africa\",\"Morocco\"\n823.6856205,42.082,19951656,\"Africa\",\"Mozambique\"\n944,62.069,47761980,\"Asia\",\"Myanmar\"\n4811.060429,52.906,2055080,\"Africa\",\"Namibia\"\n1091.359778,63.785,28901790,\"Asia\",\"Nepal\"\n36797.93332,79.762,16570613,\"Europe\",\"Netherlands\"\n25185.00911,80.204,4115771,\"Oceania\",\"New Zealand\"\n2749.320965,72.899,5675356,\"Americas\",\"Nicaragua\"\n619.6768924,56.867,12894865,\"Africa\",\"Niger\"\n2013.977305,46.859,135031164,\"Africa\",\"Nigeria\"\n49357.19017,80.196,4627926,\"Europe\",\"Norway\"\n22316.19287,75.64,3204897,\"Asia\",\"Oman\"\n2605.94758,65.483,169270617,\"Asia\",\"Pakistan\"\n9809.185636,75.537,3242173,\"Americas\",\"Panama\"\n4172.838464,71.752,6667147,\"Americas\",\"Paraguay\"\n7408.905561,71.421,28674757,\"Americas\",\"Peru\"\n3190.481016,71.688,91077287,\"Asia\",\"Philippines\"\n15389.92468,75.563,38518241,\"Europe\",\"Poland\"\n20509.64777,78.098,10642836,\"Europe\",\"Portugal\"\n19328.70901,78.746,3942491,\"Americas\",\"Puerto Rico\"\n7670.122558,76.442,798094,\"Africa\",\"Reunion\"\n10808.47561,72.476,22276056,\"Europe\",\"Romania\"\n863.0884639,46.242,8860588,\"Africa\",\"Rwanda\"\n1598.435089,65.528,199579,\"Africa\",\"Sao Tome and Principe\"\n21654.83194,72.777,27601038,\"Asia\",\"Saudi Arabia\"\n1712.472136,63.062,12267493,\"Africa\",\"Senegal\"\n9786.534714,74.002,10150265,\"Europe\",\"Serbia\"\n862.5407561,42.568,6144562,\"Africa\",\"Sierra Leone\"\n47143.17964,79.972,4553009,\"Asia\",\"Singapore\"\n18678.31435,74.663,5447502,\"Europe\",\"Slovak Republic\"\n25768.25759,77.926,2009245,\"Europe\",\"Slovenia\"\n926.1410683,48.159,9118773,\"Africa\",\"Somalia\"\n9269.657808,49.339,43997828,\"Africa\",\"South Africa\"\n28821.0637,80.941,40448191,\"Europe\",\"Spain\"\n3970.095407,72.396,20378239,\"Asia\",\"Sri Lanka\"\n2602.394995,58.556,42292929,\"Africa\",\"Sudan\"\n4513.480643,39.613,1133066,\"Africa\",\"Swaziland\"\n33859.74835,80.884,9031088,\"Europe\",\"Sweden\"\n37506.41907,81.701,7554661,\"Europe\",\"Switzerland\"\n4184.548089,74.143,19314747,\"Asia\",\"Syria\"\n28718.27684,78.4,23174294,\"Asia\",\"Taiwan\"\n1107.482182,52.517,38139640,\"Africa\",\"Tanzania\"\n7458.396327,70.616,65068149,\"Asia\",\"Thailand\"\n882.9699438,58.42,5701579,\"Africa\",\"Togo\"\n18008.50924,69.819,1056608,\"Americas\",\"Trinidad and Tobago\"\n7092.923025,73.923,10276158,\"Africa\",\"Tunisia\"\n8458.276384,71.777,71158647,\"Europe\",\"Turkey\"\n1056.380121,51.542,29170398,\"Africa\",\"Uganda\"\n33203.26128,79.425,60776238,\"Europe\",\"United Kingdom\"\n42951.65309,78.242,301139947,\"Americas\",\"United States\"\n10611.46299,76.384,3447496,\"Americas\",\"Uruguay\"\n11415.80569,73.747,26084662,\"Americas\",\"Venezuela\"\n2441.576404,74.249,85262356,\"Asia\",\"Vietnam\"\n3025.349798,73.422,4018332,\"Asia\",\"West Bank and Gaza\"\n2280.769906,62.698,22211743,\"Asia\",\"Yemen, Rep.\"\n1271.211593,42.384,11746035,\"Africa\",\"Zambia\"\n469.7092981,43.487,12311143,\"Africa\",\"Zimbabwe\""
+    },
+    {
+      "name": "scale/fill",
+      "format": {
+        "type": "csv",
+        "parse": {}
+      },
+      "values": "\"domain\"\n\"Africa\"\n\"Americas\"\n\"Asia\"\n\"Europe\"\n\"Oceania\""
+    },
+    {
+      "name": "scale/size",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n3e+06\n1e+07\n1e+08\n1e+09"
+    },
+    {
+      "name": "scale/x",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n277.5518587\n49357.19017"
+    },
+    {
+      "name": "scale/y",
+      "format": {
+        "type": "csv",
+        "parse": {
+          "domain": "number"
+        }
+      },
+      "values": "\"domain\"\n37.4635\n84.7525"
+    }
+  ],
+  "scales": [
+    {
+      "domain": {
+        "data": "scale/fill",
+        "field": "data.domain"
+      },
+      "name": "fill",
+      "type": "ordinal",
+      "range": ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854"],
+      "points": true,
+      "sort": false
+    },
+    {
+      "name": "size",
+      "domain": {
+        "data": "scale/size",
+        "field": "data.domain"
+      },
+      "range": [2, 2000],
+      "zero": false,
+      "nice": false,
+      "clamp": false
+    },
+    {
+      "domain": {
+        "data": "scale/x",
+        "field": "data.domain"
+      },
+      "name": "x",
+      "type": "log",
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "width"
+    },
+    {
+      "name": "y",
+      "domain": {
+        "data": "scale/y",
+        "field": "data.domain"
+      },
+      "zero": false,
+      "nice": false,
+      "clamp": false,
+      "range": "height"
+    }
+  ],
+  "marks": [
+    {
+      "type": "symbol",
+      "properties": {
+        "update": {
+          "x": {
+            "scale": "x",
+            "field": "data.gdpPercap"
+          },
+          "y": {
+            "scale": "y",
+            "field": "data.lifeExp"
+          },
+          "size": {
+            "scale": "size",
+            "field": "data.pop"
+          },
+          "fill": {
+            "scale": "fill",
+            "field": "data.continent"
+          },
+          "stroke": {
+            "value": "black"
+          },
+          "opacity": {
+            "value": 0.6
+          }
+        },
+        "ggvis": {
+          "data": {
+            "value": ".0"
+          }
+        }
+      },
+      "from": {
+        "data": ".0"
+      },
+      "key": "data.country"
+    }
+  ],
+  "legends": [
+    {
+      "orient": "right",
+      "title": "Continent",
+      "fill": "fill"
+    }
+  ],
+  "axes": [
+    {
+      "type": "x",
+      "scale": "x",
+      "orient": "bottom",
+      "title": "Income per person",
+      "format": "d",
+      "values": [500, 1000, 2000, 5000, 10000, 20000, 50000],
+      "layer": "back",
+      "grid": true
+    },
+    {
+      "type": "y",
+      "scale": "y",
+      "orient": "left",
+      "title": "Life expectancy",
+      "titleOffset": 40,
+      "layer": "back",
+      "grid": true
+    }
+  ],
+  "padding": null,
+  "ggvis_opts": {
+    "keep_aspect": false,
+    "resizable": true,
+    "padding": {},
+    "duration": 250,
+    "renderer": "svg",
+    "hover_duration": 0,
+    "width": 672,
+    "height": 480
+  },
+  "handlers": null
+};
+ggvis.getPlot("plot_id382464071").parseSpec(plot_id382464071_spec);
+</script>
+<p><br></p>
+</div>
+<div id="how-do-you-add-a-plot-title" class="section level3">
+<h3>How do you add a plot title?</h3>
+<p>It is not currently possible to add plot titles in <code>ggvis</code> without embedding graphics in a Shiny app. However, the syntax for an app like the one below is fairly straightforward. Simply call <code>bind_shiny()</code> at the end of the server part and place the graphic in the ui using the <code>ggvisOutput()</code> function. Make sure that the <code>plot_id</code> is the same in both!</p>
+<pre class="r"><code>library(shiny) ; library(ggvis) ; library(gapminder) ; library(dplyr)
+
+df &lt;- filter(gapminder, year == &quot;2007&quot;)
+
+ui &lt;- shinyUI(fluidPage(
+  fluidRow(
+    column(12,
+           br(),
+           h4(&quot;Plotting the Wealth and Health of Countries (2007)&quot;, align = &quot;center&quot;),
+           br(),
+           ggvisOutput(&quot;plot&quot;),
+           br(),
+           br(),
+           h6(&quot;Data: Gapminder&quot;, align = &quot;left&quot;),
+           h6(&quot;LICENSE: Creative Commons Attribution License 3.0&quot;, align = &quot;left&quot;)
+    ))))
+
+server &lt;- function(input, output) {
+  
+  df %&gt;% 
+    ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6, key := ~country) %&gt;% 
+    layer_points() %&gt;% 
+    scale_nominal(&quot;fill&quot;, range = c(&quot;#66c2a5&quot;, &quot;#fc8d62&quot;, &quot;#8da0cb&quot;, &quot;#e78ac3&quot;, &quot;#a6d854&quot;)) %&gt;% 
+    scale_numeric(&quot;x&quot;, trans = &quot;log&quot;, expand = 0) %&gt;% 
+    scale_numeric(&quot;size&quot;, domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %&gt;%
+    add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
+    add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;%     
+    add_tooltip(function(df){paste0(&quot;&lt;strong&gt;Country: &lt;/strong&gt;&quot;, df$country, 
+                                    &quot;&lt;br&gt;&lt;strong&gt;Income per person: &lt;/strong&gt; &quot;,&quot;$&quot;, round(df$gdpPercap, 0),
+                                    &quot;&lt;br&gt;&lt;strong&gt;Life expectancy: &lt;/strong&gt;&quot;, round(df$lifeExp, 1),
+                                    &quot;&lt;br&gt;&lt;strong&gt;Population: &lt;/strong&gt;&quot;, paste(format(round(df$pop / 1e6, 1), trim = TRUE), &quot;M&quot;))}, &quot;click&quot;) %&gt;% 
+    add_legend(scales = &quot;fill&quot;, title = &quot;Continent&quot;) %&gt;% hide_legend(&quot;size&quot;) %&gt;% 
+    set_options(width = &quot;auto&quot;) %&gt;% 
+    bind_shiny(&quot;plot&quot;)
+}
+
+shinyApp(ui, server)</code></pre>
+<p><br> <br></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

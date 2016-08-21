@@ -1,0 +1,308 @@
+---
+title: "ggvis"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 5
+    toc_float: TRUE
+    theme: simplex
+    highlight: textmate
+---
+
+<br>
+
+### The ggvis package
+
+[ggvis](http://ggvis.rstudio.com) is a package developed by Winston Chang and Hadley Wickham that allows users to create interactive web graphics in R. 
+
+Like `ggplot2`, `ggvis` is an implementation of the 'grammar of graphics' (Wilkinson 1999; 2005) which at its simplest states that statistical plots are assembled from several components. This is illustrated by the use of layers in `ggvis`. You start with a dataframe, map variables to visual properties (e.g. x-position, fill, size etc) and then add simple (e.g. points) or compound (e.g. smoothing lines) layers. For example, you can build up a graphic by
+
+```{r, eval=FALSE}
+library(ggvis)
+mtcars %>% # first choosing a dataset such as mtcars, then
+  ggvis(x = ~wt, y = ~mpg) %>% # call `ggvis()` to build the graphic and map variables (wt) to the x and (mpg) to the y-position, then
+  layer_points() %>%  # add a layer of points, then
+  layer_smooths # finally a smoothing line
+```
+
+You'll notice that `ggvis` makes use of the `%>%` or 'pipe' operator from the [`magrittr`](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html) package. This allows you to write code in neat logical steps, adding layer upon layer.
+
+`ggvis` is built using the reactive programming framework of [Shiny](http://shiny.rstudio.com) so you can create static and *interactive* graphics in your web browser. 
+
+<br>
+
+### The data
+We'll be using some data from [Gapminder](http://www.gapminder.org/data/) that have been helpfully bundled together into an R package called `gapminder` by [Jenny Bryan](https://github.com/jennybc/gapminder). 
+
+There are 6 different variables in the dataframe:
+
+| Name       | Description                                                                                       |
+|:-----------|:--------------------------------------------------------------------------------------------------|
+| country    | [World countries](http://www.gapminder.org/documentation/documentation/formal-list-of-areas.xlsx) |
+| continent  | [World continents](http://www.gapminder.org/gsdev/files/popReg/en/list_country_groups_en.xls)     |
+| year       | 1952-2007                                                                                         |
+| lifeExp    | [Life expectancy at birth](http://www.gapminder.org/data/documentation/gd004/)                    |
+| pop        | [Total population](http://www.gapminder.org/data/documentation/gd003/)                            |
+| gdpPercap  | [GDP per capita by purchasing power parities](http://www.gapminder.org/data/documentation/gd001/) |
+
+Gapminder's data is released under the Creative Commons Attribution 3.0 Unported license. [See their terms of use.](https://docs.google.com/document/pub?id=1POd-pBMc5vDXAmxrpGjPLaCSDSWuxX6FLQgq5DhlUhM)
+
+<br>
+
+### Setting up
+
+Before running through the questions (and answers) let's load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.
+
+```{r, message=FALSE}
+library(gapminder); library(dplyr) ; library(ggvis)
+df <- filter(gapminder, year == "2007")
+head(df)
+```
+
+<br>
+
+### When are the `~` and `:=` operators used?
+The `~` operator or 'tilda' is used to *map* visual properties like `x`, `y`, and `fill` to a variable. The plot below maps the `x` to (gdpPercap), `y` to (lifeExp), and `fill` to (continent).
+
+```{r}
+df %>%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, fill = ~continent) %>% 
+  layer_points()
+```
+
+The `:=` operator is used to *set* visual properties to a specific value like 5, or "red". The plot below also maps the `x`, `y`, and `fill` to variables but `stroke` is set to "black" and `opacity` to 0.6.
+
+```{r}
+df %>%
+  ggvis(x = ~gdpPercap, y = ~lifeExp,  fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points()
+```
+
+<br>
+
+### How do you show multiple scales in a legend?
+If you have multiple scales `gggvis` will unhelpfully superimpose them in the legend. In the plot below `size` is mapped to (pop) and `fill` to (continent).
+
+```{r}
+df %>%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points()
+```
+The trick is to offset one of the scales by pushing it down the y-axis using the `legend_props` function. In this case, the `size` scale drops belows the `fill` scale.
+
+```{r}
+df %>%
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100)))
+```
+
+<br>
+
+### How do you change the titles on each axis?
+The `add_axis()` function includes arguments for adding titles ...
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>%
+  add_axis('x', title = "Income per person") %>% 
+  add_axis('y', title = "Life expectancy") %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100)))
+```
+
+and offsetting them if they are too close to the axis labels.
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>%
+  add_axis('x', title = "Income per person") %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100)))
+```
+
+<br>
+
+### How do you log transform a scale?
+The `scale_numeric()` function includes the `trans()` argument which can transform a scale to "log", "sqrt", "quantile" etc. The plot below log transforms the x-axis so that doubling (gdpPercap) shows the same distance on all levels. The argument `expand` is used to prevent the points from bunching up on the y-axis.
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person") %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100)))
+```
+
+However, the x-axis labels aren't easy to read. If we tweak the `format()` and `values()` arguments in the `add_axis()` function we obtain integer values that are more legibly spaced .
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100)))
+```
+
+<br>
+
+### How do you add custom fill colours?
+The `scale_nominal()` function includes the `range` argument that allows users to choose their own colour palettes. The palette used in the plot below is called 'Set2' and derives from Cynthia Brewer's excellent [colorbrewer2.org](http://colorbrewer2.org)
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100))) 
+```
+
+<br>
+
+### Can you incorporate dplyr code into ggvis?
+`ggvis` uses the pipe operator which is also found in `dplyr`, `tidyr` and several other packages developed by Hadley Wickham. This means that it is very easy to interweave `dplyr` and other functions into `ggvis` code. In the plot below the `filter()` function from the [`dplyr`](https://github.com/hadley/dplyr) package is used to retain values for countries in Africa and Europe. The `mutate()` function is used to convert (continent) to a factor.
+
+```{r}
+df %>% 
+  filter(continent %in% c("Africa", "Europe")) %>%
+  mutate(continent = factor(continent, levels = c("Africa", "Europe"))) %>% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#e78ac3")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 50))) 
+```
+
+This plot uses the `group_by()` and `summarise()` functions from `dplyr` to calculate the median for each of the continuous variables by continent. Notice that the user-defined labels on the x-axis have been amended to take account of the narrower range of median values.
+
+```{r}
+df %>% 
+    group_by(continent) %>%
+    summarise(gdpPercap = median(gdpPercap),
+    lifeExp = median(lifeExp),
+    pop = median(pop)) %>% 
+  mutate(continent = factor(continent)) %>% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person", format='d', values = c(2000, 5000, 10000, 20000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100))) 
+```
+
+<br>
+
+### How do you add text labels?
+Not all marks support all properties. The plot below shows the median values for each continent and adds a corresponding text label. Positioning the text label can be quite tricky so you will need to experiment. Since `layer_text()` doesn't support the `size` property it has been removed.
+
+```{r}
+df %>% 
+    group_by(continent) %>%
+    summarise(gdpPercap = median(gdpPercap),
+    lifeExp = median(lifeExp),
+    pop = median(pop)) %>% 
+  mutate(continent = factor(continent)) %>% 
+  ggvis(x = ~gdpPercap, y = ~lifeExp, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  layer_text(text := ~continent, x= ~gdpPercap+0.05, y=~lifeExp+0.5, fill := "black", baseline := "bottom", align := "center", fontSize := 12) %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  add_axis('x', title = "Income per person", format='d', values = c(2000, 5000, 10000, 20000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  hide_legend("fill")
+```
+
+### How do you control a scale?
+It is possible to control properties other than `x` and `y`. The plot below uses the `scale_numeric()` function to control the set of data values using the `domain` argument and the set of visual values using `range`. In other words, the values of (pop) are split at 3 million, 10 million etc intervals and reprented visually along a range between 2 to 200 pixels.
+
+```{r}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6) %>% 
+  layer_points() %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  scale_numeric("size", domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %>%
+  add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_legend(scales = "size", properties = legend_props(legend = list(y = 100))) 
+```
+
+<br>
+
+### How do you add a tooltip?
+`ggvis` enables the user to add interactive controls like `input_slider()` and `add_tooltip()` To add a tooltip you need to ensure that the `key` argument is added to the `ggvis()` call. This keeps track of which observations correspond to one another during transitions. The key used in the plot below is (country) because this is a unique id. The function `add_tooltip()` can then be added and tweaked to concatenate additional character strings to improve presentation. In this plot the user needs to click to obtain the country and continent of each mark.
+
+```{r, warning=FALSE}
+df %>% 
+ ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6, key := ~country) %>% 
+  layer_points() %>% 
+  scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+  scale_numeric("x", trans = "log", expand = 0) %>% 
+  scale_numeric("size", domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %>%
+  add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+  add_axis('y', title = "Life expectancy", title_offset = 40) %>% 
+  add_tooltip(function(df){paste0("<strong>Country: </strong>", df$country, 
+                                    "<br><strong>Income per person: </strong> ","$", round(df$gdpPercap, 0),
+                                    "<br><strong>Life expectancy: </strong>", round(df$lifeExp, 1),
+                                    "<br><strong>Population: </strong>", paste(format(round(df$pop / 1e6, 1), trim = TRUE), "M"))}, "click") %>% 
+  add_legend(scales = "fill", title = "Continent") %>% hide_legend("size")
+```
+
+<br>
+
+### How do you add a plot title?
+It is not currently possible to add plot titles in `ggvis` without embedding graphics in a Shiny app. However, the syntax for an app like the one below is fairly straightforward. Simply call `bind_shiny()` at the end of the server part and place the graphic in the ui using the `ggvisOutput()` function. Make sure that the `plot_id` is the same in both!
+
+```{r, eval=FALSE}
+library(shiny) ; library(ggvis) ; library(gapminder) ; library(dplyr)
+
+df <- filter(gapminder, year == "2007")
+
+ui <- shinyUI(fluidPage(
+  fluidRow(
+    column(12,
+           br(),
+           h4("Plotting the Wealth and Health of Countries (2007)", align = "center"),
+           br(),
+           ggvisOutput("plot"),
+           br(),
+           br(),
+           h6("Data: Gapminder", align = "left"),
+           h6("LICENSE: Creative Commons Attribution License 3.0", align = "left")
+    ))))
+
+server <- function(input, output) {
+  
+  df %>% 
+    ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := "black", opacity := 0.6, key := ~country) %>% 
+    layer_points() %>% 
+    scale_nominal("fill", range = c("#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854")) %>% 
+    scale_numeric("x", trans = "log", expand = 0) %>% 
+    scale_numeric("size", domain = c(3000000, 10000000, 100000000, 1000000000), range = c(2, 2000)) %>%
+    add_axis('x', title = "Income per person", format='d', values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %>% 
+    add_axis('y', title = "Life expectancy", title_offset = 40) %>%     
+    add_tooltip(function(df){paste0("<strong>Country: </strong>", df$country, 
+                                    "<br><strong>Income per person: </strong> ","$", round(df$gdpPercap, 0),
+                                    "<br><strong>Life expectancy: </strong>", round(df$lifeExp, 1),
+                                    "<br><strong>Population: </strong>", paste(format(round(df$pop / 1e6, 1), trim = TRUE), "M"))}, "click") %>% 
+    add_legend(scales = "fill", title = "Continent") %>% hide_legend("size") %>% 
+    set_options(width = "auto") %>% 
+    bind_shiny("plot")
+}
+
+shinyApp(ui, server)
+```
+
+<br>
+<br>
