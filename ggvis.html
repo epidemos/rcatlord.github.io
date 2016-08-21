@@ -392,7 +392,7 @@ mtcars %&gt;% # first choosing a dataset such as mtcars, then
 </div>
 <div id="setting-up" class="section level3">
 <h3>Setting up</h3>
-<p>Before running through the questions (and answers) let’s load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.</p>
+<p>Let’s load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.</p>
 <pre class="r"><code>library(gapminder); library(dplyr) ; library(ggvis)
 df &lt;- filter(gapminder, year == &quot;2007&quot;)
 head(df)</code></pre>
@@ -413,27 +413,27 @@ head(df)</code></pre>
 <pre class="r"><code>df %&gt;%
   ggvis(x = ~gdpPercap, y = ~lifeExp, fill = ~continent) %&gt;% 
   layer_points()</code></pre>
-<div id="plot_id459803056-container" class="ggvis-output-container">
-<div id="plot_id459803056" class="ggvis-output"></div>
+<div id="plot_id614088427-container" class="ggvis-output-container">
+<div id="plot_id614088427" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id459803056_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id459803056" data-renderer="svg">SVG</a>
+<a id="plot_id614088427_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id614088427" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id459803056_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id459803056" data-renderer="canvas">Canvas</a>
+<a id="plot_id614088427_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id614088427" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id459803056_download" class="ggvis-download" data-plot-id="plot_id459803056">Download</a>
+<a id="plot_id614088427_download" class="ggvis-download" data-plot-id="plot_id614088427">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id459803056_spec = {
+var plot_id614088427_spec = {
   "data": [
     {
       "name": ".0",
@@ -576,37 +576,37 @@ var plot_id459803056_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id459803056").parseSpec(plot_id459803056_spec);
+ggvis.getPlot("plot_id614088427").parseSpec(plot_id614088427_spec);
 </script>
 <p>The <code>:=</code> operator is used to <em>set</em> visual properties to a specific value like 5, or “red”. The plot below also maps the <code>x</code>, <code>y</code>, and <code>fill</code> to variables but <code>stroke</code> is set to “black” and <code>opacity</code> to 0.6.</p>
 <pre class="r"><code>df %&gt;%
   ggvis(x = ~gdpPercap, y = ~lifeExp,  fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
   layer_points()</code></pre>
-<div id="plot_id239962052-container" class="ggvis-output-container">
-<div id="plot_id239962052" class="ggvis-output"></div>
+<div id="plot_id321084905-container" class="ggvis-output-container">
+<div id="plot_id321084905" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id239962052_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id239962052" data-renderer="svg">SVG</a>
+<a id="plot_id321084905_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id321084905" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id239962052_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id239962052" data-renderer="canvas">Canvas</a>
+<a id="plot_id321084905_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id321084905" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id239962052_download" class="ggvis-download" data-plot-id="plot_id239962052">Download</a>
+<a id="plot_id321084905_download" class="ggvis-download" data-plot-id="plot_id321084905">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id239962052_spec = {
+var plot_id321084905_spec = {
   "data": [
     {
       "name": ".0",
@@ -755,41 +755,41 @@ var plot_id239962052_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id239962052").parseSpec(plot_id239962052_spec);
+ggvis.getPlot("plot_id321084905").parseSpec(plot_id321084905_spec);
 </script>
 <p><br></p>
 </div>
 <div id="how-do-you-show-multiple-scales-in-a-legend" class="section level3">
 <h3>How do you show multiple scales in a legend?</h3>
-<p>If you have multiple scales <code>gggvis</code> will unhelpfully superimpose them in the legend. In the plot below <code>size</code> is mapped to (pop) and <code>fill</code> to (continent).</p>
+<p>If you have multiple scales <code>ggvis</code> will unhelpfully superimpose them in the legend. In the plot below <code>size</code> is mapped to (pop) and <code>fill</code> to (continent).</p>
 <pre class="r"><code>df %&gt;%
   ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
   layer_points()</code></pre>
-<p><div id="plot_id312985366-container" class="ggvis-output-container">
-<div id="plot_id312985366" class="ggvis-output"></div>
+<p><div id="plot_id905665286-container" class="ggvis-output-container">
+<div id="plot_id905665286" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id312985366_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id312985366" data-renderer="svg">SVG</a>
+<a id="plot_id905665286_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id905665286" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id312985366_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id312985366" data-renderer="canvas">Canvas</a>
+<a id="plot_id905665286_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id905665286" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id312985366_download" class="ggvis-download" data-plot-id="plot_id312985366">Download</a>
+<a id="plot_id905665286_download" class="ggvis-download" data-plot-id="plot_id905665286">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id312985366_spec = {
+var plot_id905665286_spec = {
   "data": [
     {
       "name": ".0",
@@ -966,37 +966,37 @@ var plot_id312985366_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id312985366").parseSpec(plot_id312985366_spec);
+ggvis.getPlot("plot_id905665286").parseSpec(plot_id905665286_spec);
 </script> The trick is to offset one of the scales by pushing it down the y-axis using the <code>legend_props</code> function. In this case, the <code>size</code> scale drops belows the <code>fill</code> scale.</p>
 <pre class="r"><code>df %&gt;%
   ggvis(x = ~gdpPercap, y = ~lifeExp, size = ~pop, fill = ~continent, stroke := &quot;black&quot;, opacity := 0.6) %&gt;% 
   layer_points() %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
-<div id="plot_id415945790-container" class="ggvis-output-container">
-<div id="plot_id415945790" class="ggvis-output"></div>
+<div id="plot_id765549314-container" class="ggvis-output-container">
+<div id="plot_id765549314" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id415945790_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id415945790" data-renderer="svg">SVG</a>
+<a id="plot_id765549314_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id765549314" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id415945790_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id415945790" data-renderer="canvas">Canvas</a>
+<a id="plot_id765549314_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id765549314" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id415945790_download" class="ggvis-download" data-plot-id="plot_id415945790">Download</a>
+<a id="plot_id765549314_download" class="ggvis-download" data-plot-id="plot_id765549314">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id415945790_spec = {
+var plot_id765549314_spec = {
   "data": [
     {
       "name": ".0",
@@ -1180,11 +1180,11 @@ var plot_id415945790_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id415945790").parseSpec(plot_id415945790_spec);
+ggvis.getPlot("plot_id765549314").parseSpec(plot_id765549314_spec);
 </script>
 <p><br></p>
 </div>
@@ -1197,27 +1197,27 @@ ggvis.getPlot("plot_id415945790").parseSpec(plot_id415945790_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
-<div id="plot_id165005674-container" class="ggvis-output-container">
-<div id="plot_id165005674" class="ggvis-output"></div>
+<div id="plot_id789523341-container" class="ggvis-output-container">
+<div id="plot_id789523341" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id165005674_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id165005674" data-renderer="svg">SVG</a>
+<a id="plot_id789523341_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id789523341" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id165005674_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id165005674" data-renderer="canvas">Canvas</a>
+<a id="plot_id789523341_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id789523341" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id165005674_download" class="ggvis-download" data-plot-id="plot_id165005674">Download</a>
+<a id="plot_id789523341_download" class="ggvis-download" data-plot-id="plot_id789523341">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id165005674_spec = {
+var plot_id789523341_spec = {
   "data": [
     {
       "name": ".0",
@@ -1401,11 +1401,11 @@ var plot_id165005674_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id165005674").parseSpec(plot_id165005674_spec);
+ggvis.getPlot("plot_id789523341").parseSpec(plot_id789523341_spec);
 </script>
 <p>and offsetting them if they are too close to the axis labels.</p>
 <pre class="r"><code>df %&gt;% 
@@ -1414,27 +1414,27 @@ ggvis.getPlot("plot_id165005674").parseSpec(plot_id165005674_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
-<div id="plot_id332279895-container" class="ggvis-output-container">
-<div id="plot_id332279895" class="ggvis-output"></div>
+<div id="plot_id704674962-container" class="ggvis-output-container">
+<div id="plot_id704674962" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id332279895_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id332279895" data-renderer="svg">SVG</a>
+<a id="plot_id704674962_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id704674962" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id332279895_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id332279895" data-renderer="canvas">Canvas</a>
+<a id="plot_id704674962_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id704674962" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id332279895_download" class="ggvis-download" data-plot-id="plot_id332279895">Download</a>
+<a id="plot_id704674962_download" class="ggvis-download" data-plot-id="plot_id704674962">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id332279895_spec = {
+var plot_id704674962_spec = {
   "data": [
     {
       "name": ".0",
@@ -1619,11 +1619,11 @@ var plot_id332279895_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id332279895").parseSpec(plot_id332279895_spec);
+ggvis.getPlot("plot_id704674962").parseSpec(plot_id704674962_spec);
 </script>
 <p><br></p>
 </div>
@@ -1637,27 +1637,27 @@ ggvis.getPlot("plot_id332279895").parseSpec(plot_id332279895_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
-<div id="plot_id722974162-container" class="ggvis-output-container">
-<div id="plot_id722974162" class="ggvis-output"></div>
+<div id="plot_id732354522-container" class="ggvis-output-container">
+<div id="plot_id732354522" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id722974162_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id722974162" data-renderer="svg">SVG</a>
+<a id="plot_id732354522_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id732354522" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id722974162_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id722974162" data-renderer="canvas">Canvas</a>
+<a id="plot_id732354522_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id732354522" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id722974162_download" class="ggvis-download" data-plot-id="plot_id722974162">Download</a>
+<a id="plot_id732354522_download" class="ggvis-download" data-plot-id="plot_id732354522">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id722974162_spec = {
+var plot_id732354522_spec = {
   "data": [
     {
       "name": ".0",
@@ -1843,11 +1843,11 @@ var plot_id722974162_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id722974162").parseSpec(plot_id722974162_spec);
+ggvis.getPlot("plot_id732354522").parseSpec(plot_id732354522_spec);
 </script>
 <p>However, the x-axis labels aren’t easy to read. If we tweak the <code>format()</code> and <code>values()</code> arguments in the <code>add_axis()</code> function we obtain integer values that are more legibly spaced .</p>
 <pre class="r"><code>df %&gt;% 
@@ -1857,27 +1857,27 @@ ggvis.getPlot("plot_id722974162").parseSpec(plot_id722974162_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100)))</code></pre>
-<div id="plot_id656893865-container" class="ggvis-output-container">
-<div id="plot_id656893865" class="ggvis-output"></div>
+<div id="plot_id556959094-container" class="ggvis-output-container">
+<div id="plot_id556959094" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id656893865_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id656893865" data-renderer="svg">SVG</a>
+<a id="plot_id556959094_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id556959094" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id656893865_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id656893865" data-renderer="canvas">Canvas</a>
+<a id="plot_id556959094_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id556959094" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id656893865_download" class="ggvis-download" data-plot-id="plot_id656893865">Download</a>
+<a id="plot_id556959094_download" class="ggvis-download" data-plot-id="plot_id556959094">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id656893865_spec = {
+var plot_id556959094_spec = {
   "data": [
     {
       "name": ".0",
@@ -2065,11 +2065,11 @@ var plot_id656893865_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id656893865").parseSpec(plot_id656893865_spec);
+ggvis.getPlot("plot_id556959094").parseSpec(plot_id556959094_spec);
 </script>
 <p><br></p>
 </div>
@@ -2084,27 +2084,27 @@ ggvis.getPlot("plot_id656893865").parseSpec(plot_id656893865_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
-<div id="plot_id615753319-container" class="ggvis-output-container">
-<div id="plot_id615753319" class="ggvis-output"></div>
+<div id="plot_id200933834-container" class="ggvis-output-container">
+<div id="plot_id200933834" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id615753319_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id615753319" data-renderer="svg">SVG</a>
+<a id="plot_id200933834_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id200933834" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id615753319_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id615753319" data-renderer="canvas">Canvas</a>
+<a id="plot_id200933834_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id200933834" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id615753319_download" class="ggvis-download" data-plot-id="plot_id615753319">Download</a>
+<a id="plot_id200933834_download" class="ggvis-download" data-plot-id="plot_id200933834">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id615753319_spec = {
+var plot_id200933834_spec = {
   "data": [
     {
       "name": ".0",
@@ -2292,11 +2292,11 @@ var plot_id615753319_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id615753319").parseSpec(plot_id615753319_spec);
+ggvis.getPlot("plot_id200933834").parseSpec(plot_id200933834_spec);
 </script>
 <p><br></p>
 </div>
@@ -2313,27 +2313,27 @@ ggvis.getPlot("plot_id615753319").parseSpec(plot_id615753319_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 50))) </code></pre>
-<div id="plot_id452374737-container" class="ggvis-output-container">
-<div id="plot_id452374737" class="ggvis-output"></div>
+<div id="plot_id113906327-container" class="ggvis-output-container">
+<div id="plot_id113906327" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id452374737_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id452374737" data-renderer="svg">SVG</a>
+<a id="plot_id113906327_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id113906327" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id452374737_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id452374737" data-renderer="canvas">Canvas</a>
+<a id="plot_id113906327_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id113906327" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id452374737_download" class="ggvis-download" data-plot-id="plot_id452374737">Download</a>
+<a id="plot_id113906327_download" class="ggvis-download" data-plot-id="plot_id113906327">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id452374737_spec = {
+var plot_id113906327_spec = {
   "data": [
     {
       "name": ".0",
@@ -2521,11 +2521,11 @@ var plot_id452374737_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id452374737").parseSpec(plot_id452374737_spec);
+ggvis.getPlot("plot_id113906327").parseSpec(plot_id113906327_spec);
 </script>
 <p>This plot uses the <code>group_by()</code> and <code>summarise()</code> functions from <code>dplyr</code> to calculate the median for each of the continuous variables by continent. Notice that the user-defined labels on the x-axis have been amended to take account of the narrower range of median values.</p>
 <pre class="r"><code>df %&gt;% 
@@ -2541,27 +2541,27 @@ ggvis.getPlot("plot_id452374737").parseSpec(plot_id452374737_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(2000, 5000, 10000, 20000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
-<div id="plot_id684400017-container" class="ggvis-output-container">
-<div id="plot_id684400017" class="ggvis-output"></div>
+<div id="plot_id125548594-container" class="ggvis-output-container">
+<div id="plot_id125548594" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id684400017_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id684400017" data-renderer="svg">SVG</a>
+<a id="plot_id125548594_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id125548594" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id684400017_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id684400017" data-renderer="canvas">Canvas</a>
+<a id="plot_id125548594_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id125548594" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id684400017_download" class="ggvis-download" data-plot-id="plot_id684400017">Download</a>
+<a id="plot_id125548594_download" class="ggvis-download" data-plot-id="plot_id125548594">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id684400017_spec = {
+var plot_id125548594_spec = {
   "data": [
     {
       "name": ".0",
@@ -2749,11 +2749,11 @@ var plot_id684400017_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id684400017").parseSpec(plot_id684400017_spec);
+ggvis.getPlot("plot_id125548594").parseSpec(plot_id125548594_spec);
 </script>
 <p><br></p>
 </div>
@@ -2774,27 +2774,27 @@ ggvis.getPlot("plot_id684400017").parseSpec(plot_id684400017_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(2000, 5000, 10000, 20000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   hide_legend(&quot;fill&quot;)</code></pre>
-<div id="plot_id522680605-container" class="ggvis-output-container">
-<div id="plot_id522680605" class="ggvis-output"></div>
+<div id="plot_id846667258-container" class="ggvis-output-container">
+<div id="plot_id846667258" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id522680605_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id522680605" data-renderer="svg">SVG</a>
+<a id="plot_id846667258_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id846667258" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id522680605_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id522680605" data-renderer="canvas">Canvas</a>
+<a id="plot_id846667258_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id846667258" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id522680605_download" class="ggvis-download" data-plot-id="plot_id522680605">Download</a>
+<a id="plot_id846667258_download" class="ggvis-download" data-plot-id="plot_id846667258">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id522680605_spec = {
+var plot_id846667258_spec = {
   "data": [
     {
       "name": ".0",
@@ -2987,11 +2987,11 @@ var plot_id522680605_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id522680605").parseSpec(plot_id522680605_spec);
+ggvis.getPlot("plot_id846667258").parseSpec(plot_id846667258_spec);
 </script>
 </div>
 <div id="how-do-you-control-a-scale" class="section level3">
@@ -3006,27 +3006,27 @@ ggvis.getPlot("plot_id522680605").parseSpec(plot_id522680605_spec);
   add_axis(&#39;x&#39;, title = &quot;Income per person&quot;, format=&#39;d&#39;, values = c(500, 1000, 2000, 5000, 10000, 20000, 50000)) %&gt;% 
   add_axis(&#39;y&#39;, title = &quot;Life expectancy&quot;, title_offset = 40) %&gt;% 
   add_legend(scales = &quot;size&quot;, properties = legend_props(legend = list(y = 100))) </code></pre>
-<div id="plot_id981490229-container" class="ggvis-output-container">
-<div id="plot_id981490229" class="ggvis-output"></div>
+<div id="plot_id721405924-container" class="ggvis-output-container">
+<div id="plot_id721405924" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id981490229_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id981490229" data-renderer="svg">SVG</a>
+<a id="plot_id721405924_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id721405924" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id981490229_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id981490229" data-renderer="canvas">Canvas</a>
+<a id="plot_id721405924_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id721405924" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id981490229_download" class="ggvis-download" data-plot-id="plot_id981490229">Download</a>
+<a id="plot_id721405924_download" class="ggvis-download" data-plot-id="plot_id721405924">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id981490229_spec = {
+var plot_id721405924_spec = {
   "data": [
     {
       "name": ".0",
@@ -3214,11 +3214,11 @@ var plot_id981490229_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id981490229").parseSpec(plot_id981490229_spec);
+ggvis.getPlot("plot_id721405924").parseSpec(plot_id721405924_spec);
 </script>
 <p><br></p>
 </div>
@@ -3238,27 +3238,27 @@ ggvis.getPlot("plot_id981490229").parseSpec(plot_id981490229_spec);
                                     &quot;&lt;br&gt;&lt;strong&gt;Life expectancy: &lt;/strong&gt;&quot;, round(df$lifeExp, 1),
                                     &quot;&lt;br&gt;&lt;strong&gt;Population: &lt;/strong&gt;&quot;, paste(format(round(df$pop / 1e6, 1), trim = TRUE), &quot;M&quot;))}, &quot;click&quot;) %&gt;% 
   add_legend(scales = &quot;fill&quot;, title = &quot;Continent&quot;) %&gt;% hide_legend(&quot;size&quot;)</code></pre>
-<div id="plot_id382464071-container" class="ggvis-output-container">
-<div id="plot_id382464071" class="ggvis-output"></div>
+<div id="plot_id571305680-container" class="ggvis-output-container">
+<div id="plot_id571305680" class="ggvis-output"></div>
 <div class="plot-gear-icon">
 <nav class="ggvis-control">
 <a class="ggvis-dropdown-toggle" title="Controls" onclick="return false;"></a>
 <ul class="ggvis-dropdown">
 <li>
 Renderer: 
-<a id="plot_id382464071_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id382464071" data-renderer="svg">SVG</a>
+<a id="plot_id571305680_renderer_svg" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id571305680" data-renderer="svg">SVG</a>
  | 
-<a id="plot_id382464071_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id382464071" data-renderer="canvas">Canvas</a>
+<a id="plot_id571305680_renderer_canvas" class="ggvis-renderer-button" onclick="return false;" data-plot-id="plot_id571305680" data-renderer="canvas">Canvas</a>
 </li>
 <li>
-<a id="plot_id382464071_download" class="ggvis-download" data-plot-id="plot_id382464071">Download</a>
+<a id="plot_id571305680_download" class="ggvis-download" data-plot-id="plot_id571305680">Download</a>
 </li>
 </ul>
 </nav>
 </div>
 </div>
 <script type="text/javascript">
-var plot_id382464071_spec = {
+var plot_id571305680_spec = {
   "data": [
     {
       "name": ".0",
@@ -3435,11 +3435,11 @@ var plot_id382464071_spec = {
     "renderer": "svg",
     "hover_duration": 0,
     "width": 672,
-    "height": 480
+    "height": 384
   },
   "handlers": null
 };
-ggvis.getPlot("plot_id382464071").parseSpec(plot_id382464071_spec);
+ggvis.getPlot("plot_id571305680").parseSpec(plot_id571305680_spec);
 </script>
 <p><br></p>
 </div>

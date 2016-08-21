@@ -5,6 +5,7 @@ output:
     toc: TRUE
     toc_depth: 5
     toc_float: TRUE
+    fig_height: 4
     theme: simplex
     highlight: textmate
 ---
@@ -51,7 +52,7 @@ Gapminder's data is released under the Creative Commons Attribution 3.0 Unported
 
 ### Setting up
 
-Before running through the questions (and answers) let's load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.
+Let's load the R packages used in this tutorial. Only the most recent Gapminder data (2007) will be used.
 
 ```{r, message=FALSE}
 library(gapminder); library(dplyr) ; library(ggvis)
@@ -81,7 +82,7 @@ df %>%
 <br>
 
 ### How do you show multiple scales in a legend?
-If you have multiple scales `gggvis` will unhelpfully superimpose them in the legend. In the plot below `size` is mapped to (pop) and `fill` to (continent).
+If you have multiple scales `ggvis` will unhelpfully superimpose them in the legend. In the plot below `size` is mapped to (pop) and `fill` to (continent).
 
 ```{r}
 df %>%
